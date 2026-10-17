@@ -1,8 +1,6 @@
 # Attribution
 
-Every non-code asset in this repository, with its author, source and license. PhotoCraft's own
-code and original assets are MIT OR Apache-2.0 (see [`LICENSE-MIT`](LICENSE-MIT),
-[`LICENSE-APACHE`](LICENSE-APACHE) and [`NOTICE`](NOTICE)). When you add an asset, add a row here
+Every non-code asset in this repository, with its author, source and license. When you add an asset, add a row here
 in the same change; third-party assets must be permissively licensed and keep their license file
 next to them.
 
@@ -80,7 +78,7 @@ The other built-in ICC profiles and the generated LUT looks are produced by code
 
 | Path | Title | Author | Source | License |
 |---|---|---|---|---|
-| `docs/brand/` (all files) | ArtCraft name, wordmark and mark | ArtCraft Team | getartcraft.com | Not open source; trademarks of the ArtCraft Team, [`docs/brand/LICENSE-brand.txt`](docs/brand/LICENSE-brand.txt) |
+| `assets/logo.png` | Editra logo | sinanedu5-byte | Editra project | All rights reserved |
 | `docs/images/photocraft-*.jpg` | PhotoCraft screenshots | PhotoCraft contributors (UI) | Rendered offscreen with the `snapshot` example | MIT OR Apache-2.0 (UI); the artwork in each is public domain, listed below |
 | `docs/images/preferences-apply-*.png` | Preferences before and after adding Apply (no artwork) | PhotoCraft contributors | PhotoCraft control-channel capture and offscreen `snapshot` example | MIT OR Apache-2.0 |
 
