@@ -3,28 +3,40 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <title>PhotoCraft</title>
+  <title>Editra — Professional Online Image Editor</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link data-trunk rel="copy-file" href="logo.png" />
   <link data-trunk rel="rust" data-bin="photocraft-web" data-cargo-profile="wasm-release" data-cargo-features="heif" data-wasm-opt="z" data-wasm-opt-params="--converge" data-weak-refs />
   <style>
-    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #262626; }
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #1e1e1e; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     #photocraft_canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
     #photocraft_loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 0 16px; text-align: center; color: #b8b8b8; font: 14px system-ui, sans-serif; pointer-events: none; }
-    #photocraft_loading p { margin: 0 0 8px; max-width: 420px; line-height: 1.5; }
-    #photocraft_loading a { color: #e0e0e0; pointer-events: auto; }
-    /* The app removes this element once it runs. If the WebAssembly never downloads or doesn't match
-       this page, no Rust runs to say so, so the page itself shows what to do after a while. */
-    #photocraft_stalled { color: #8c8c8c; visibility: hidden; animation: photocraft-stalled 0s 20s forwards; }
+      padding: 0 16px; text-align: center; color: #b8b8b8; font-size: 14px; pointer-events: none; }
+    #photocraft_loading .logo-wrap { width: 88px; height: 88px; margin-bottom: 20px; animation: pulse 2.2s infinite ease-in-out; }
+    #photocraft_loading .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    #photocraft_loading p { margin: 0 0 8px; max-width: 440px; line-height: 1.5; }
+    #photocraft_loading .title { font-size: 18px; font-weight: 600; color: #f0f0f0; margin-bottom: 6px; letter-spacing: 0.5px; }
+    #photocraft_loading .subtitle { color: #8a8a8a; font-size: 13px; margin-bottom: 16px; }
+    #photocraft_loading a { color: #3b82f6; pointer-events: auto; text-decoration: none; }
+    #photocraft_loading a:hover { text-decoration: underline; }
+    #photocraft_stalled { color: #737373; font-size: 12px; visibility: hidden; animation: photocraft-stalled 0s 20s forwards; }
     @keyframes photocraft-stalled { to { visibility: visible; } }
+    @keyframes pulse {
+      0% { opacity: 0.75; transform: scale(0.97); }
+      50% { opacity: 1; transform: scale(1.03); }
+      100% { opacity: 0.75; transform: scale(0.97); }
+    }
   </style>
 </head>
 <body>
   <canvas id="photocraft_canvas"></canvas>
   <div id="photocraft_loading">
-    <p>Loading PhotoCraft&hellip;</p>
-    <p id="photocraft_stalled">This is taking longer than usual. If PhotoCraft doesn't start, its files may have failed to
-      download or come from a different version of this page. <a href="">Reload</a> to try again; the browser
-      console lists what failed.</p>
+    <div class="logo-wrap">
+      <img src="logo.png" alt="Editra Logo">
+    </div>
+    <div class="title">Editra</div>
+    <div class="subtitle">Starting WebAssembly &amp; WebGPU Engine&hellip;</div>
+    <p id="photocraft_stalled">This is taking longer than expected. If Editra doesn't start, your browser might not support WebGPU/WebGL2, or files failed to download. <a href="">Reload page</a> to retry.</p>
   </div>
 </body>
 </html>
