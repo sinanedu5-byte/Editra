@@ -73,10 +73,26 @@ pub fn pretty(s: &str) -> String {
         .join(if mac { "" } else { "+" })
 }
 
+/// Does the current build or environment run in a web browser?
+#[inline]
+pub fn is_browser_environment() -> bool {
+    cfg!(target_arch = "wasm32")
+}
+
+/// Returns true if the shortcut is reserved by web browsers and cannot work in a web page.
+pub fn is_browser_incompatible(sc: &str) -> bool {
+    photocraft_engine::prefs::is_browser_reserved(sc)
+}
+
 /// The command's effective shortcut in the platform's notation (`Ctrl+N`), or `None` when
-/// the command has no binding (the user removed it in Edit › Keyboard Shortcuts).
+/// the command has no binding (the user removed it in Edit › Keyboard Shortcuts), or when
+/// running in a browser where the shortcut cannot work.
 pub fn shortcut_label(app: &PhotocraftApp, command: &str) -> Option<String> {
-    effective_shortcut(app, command, default_shortcut(command).as_deref()).map(|s| pretty(&s))
+    let sc = effective_shortcut(app, command, default_shortcut(command).as_deref())?;
+    if is_browser_environment() && is_browser_incompatible(&sc) {
+        return None;
+    }
+    Some(pretty(&sc))
 }
 
 /// `label` (English, shown in the UI language) followed by the command's effective shortcut

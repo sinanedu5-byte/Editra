@@ -1509,11 +1509,64 @@ pub fn default_alternates(id: &str) -> impl Iterator<Item = &'static str> + '_ {
     ALTERNATE_SHORTCUTS.iter().filter(move |(c, _)| *c == id).map(|(_, sc)| *sc)
 }
 
+/// Shortcuts reserved by web browsers that cannot be reliably captured or executed
+/// within a browser page (e.g. closing/reopening tabs, reloading, DevTools).
+pub fn is_browser_reserved(sc: &str) -> bool {
+    let Some(n) = normalize_shortcut(sc) else { return false };
+    let unified = n.replace("Ctrl+", "Cmd+");
+    const BROWSER_RESERVED: &[&str] = &[
+        // Tab / Window management (cannot be prevented in browsers)
+        "Cmd+W",
+        "Cmd+Shift+W",
+        "Cmd+Alt+W",
+        "Cmd+Alt+Shift+W",
+        "Cmd+T",
+        "Cmd+Shift+T",
+        "Cmd+Alt+T",
+        "Cmd+N",
+        "Cmd+Shift+N",
+        "Cmd+Q",
+        "Cmd+Shift+Q",
+        // Page Navigation & Reload
+        "Cmd+R",
+        "Cmd+Shift+R",
+        "F5",
+        "Shift+F5",
+        "Ctrl+F5",
+        "Cmd+F5",
+        // DevTools and System Inspect
+        "F11",
+        "F12",
+        "Cmd+Shift+I",
+        "Cmd+Alt+I",
+        "Cmd+Alt+Shift+I",
+        "Cmd+Shift+J",
+        "Cmd+Alt+J",
+        "Cmd+Shift+C",
+        "Cmd+Alt+C",
+        // Browser panels & data
+        "Cmd+H",
+        "Cmd+Shift+H",
+        "Cmd+J",
+        "Cmd+Shift+B",
+        "Cmd+Shift+Delete",
+        "Cmd+Tab",
+        "Cmd+Shift+Tab",
+    ];
+    BROWSER_RESERVED
+        .iter()
+        .filter_map(|r| normalize_shortcut(r))
+        .any(|nr| nr.replace("Ctrl+", "Cmd+") == unified)
+}
+
 /// Keys the system takes before the app sees them (switching apps, closing the window, force
 /// quit): `edit.keyboardShortcuts` won't bind them, as Photoshop won't. `sc` is in our notation,
 /// where `Cmd` is Ctrl off the Mac.
 pub fn reserved_shortcut(sc: &str) -> bool {
     let Some(n) = normalize_shortcut(sc) else { return false };
+    if cfg!(target_arch = "wasm32") && is_browser_reserved(&n) {
+        return true;
+    }
     let reserved: &[&str] = if cfg!(target_os = "macos") {
         &["Cmd+Tab", "Cmd+Shift+Tab", "Cmd+Alt+Escape", "Cmd+`"]
     } else if cfg!(target_os = "windows") {
